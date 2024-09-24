@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earth and Moon Tides Simulation</title>
+    <style>
+        body {
+            background-color: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .orbit {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            border: 1px dashed #555;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .earth {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 30px rgba(0, 0, 255, 0.8);
+        }
+
+        .tide {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 128, 255, 0.7), rgba(0, 0, 255, 0.1));
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: bulge 2s infinite alternate;
+        }
+
+        @keyframes bulge {
+            0% {
+                transform: translate(-50%, -50%) scaleX(1.1);
+            }
+            100% {
+                transform: translate(-50%, -50%) scaleX(1.4);
+            }
+        }
+
+        .moon {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: gray;
+            border-radius: 50%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="orbit">
+        <div class="earth">
+            <div class="tide"></div>
+        </div>
+        <div class="moon"></div>
+    </div>
+</body>
+</html>
