@@ -6,13 +6,22 @@
     <title>Earth and Moon Tides Simulation</title>
     <style>
         body {
-            background-image: url('https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm0yMDktYWRqLTEyXzEuanBn.jpg');
+            margin: 0;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            position: relative;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Make sure the canvas is behind other elements */
         }
 
         .orbit {
@@ -80,11 +89,35 @@
     </style>
 </head>
 <body>
+    <canvas id="starry-sky"></canvas>
     <div class="orbit">
         <div class="earth">
             <div class="tide"></div>
-        </div>T
+        </div>
         <div class="moon"></div>
     </div>
+
+    <script>
+        const canvas = document.getElementById('starry-sky');
+        const ctx = canvas.getContext('2d');
+
+        // Resize canvas to full window size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function drawStars() {
+            for (let i = 0; i < 200; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const radius = Math.random() * 1.5;
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'white';
+                ctx.fill();
+            }
+        }
+
+        drawStars();
+    </script>
 </body>
 </html>
