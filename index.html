@@ -3,90 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earth and Moon Tides Simulation</title>
+    <title>Earth and Moon Tides Model</title>
     <style>
-        body {
-            background: url('https://st3.depositphotos.com/10567138/35814/i/450/depositphotos_358143610-stock-photo-abstract-dark-background-glowing-particles.jpg');
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .orbit {
-            position: relative;
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            border: 1px dashed #555;
-            animation: rotate 8s linear infinite;
-        }
-
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .earth {
+        body { margin: 0; }
+        canvas { display: block; }
+        #info {
             position: absolute;
-            width: 100px;
-            height: 100px;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/4/4f/Earth_poster_large.jpg');
-            background-size: cover;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 30px rgba(0, 0, 255, 0.8);
-        }
-
-        .tide {
-            position: absolute;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 128, 255, 0.7), rgba(0, 0, 255, 0.1));
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: bulge 2s infinite alternate;
-        }
-
-        @keyframes bulge {
-            0% {
-                transform: translate(-50%, -50%) scaleX(1.1);
-            }
-            100% {
-                transform: translate(-50%, -50%) scaleX(1.4);
-            }
-        }
-
-        .moon {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-image: url('https://i.pinimg.com/originals/fa/86/97/fa869743d08ca95414a50cc0ec1526bd.png');
-            background-size: cover;
-            border-radius: 50%;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            top: 10px;
+            left: 10px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
-    <div class="orbit">
-        <div class="earth">
-            <div class="tide"></div>
-        </div>
-        <div class="moon"></div>
+    <div id="info">
+        <h2>Moon's Influence on Tides</h2>
+        <p>The Moon's gravitational pull causes the Earth's oceans to bulge, creating high tides. When the Moon is overhead, the water level rises. The opposite side of Earth also experiences high tide due to centrifugal force.</p>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Earth
+        const earthGeometry = new THREE.SphereGeometry(1, 32, 32);
+        const earthMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+        const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+        scene.add(earth);
+
+        // Moon
+        const moonGeometry = new THREE.SphereGeometry(0.27, 32, 32);
+        const moonMaterial = new THREE.MeshBasicMaterial({ color: 0xaaaaaa });
+        const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+        scene.add(moon);
+
+        // Position the Moon
+        moon.position.set(3, 0, 0);
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            earth.rotation.y += 0.01; // Rotate Earth
+            moon.rotation.y += 0.02;  // Rotate Moon
+            moon.position.x = 3 * Math.cos(Date.now() * 0.001); // Moon orbit
+            moon.position.z = 3 * Math.sin(Date.now() * 0.001);
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
 </body>
 </html>
